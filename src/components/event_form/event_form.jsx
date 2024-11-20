@@ -6,11 +6,11 @@ import { SelectButtonGroup } from "./select_button_group/select_button_group";
 import { RadioButtonGroup } from "./radio_button_group/radio_button_group";
 import { FormButton } from "./form_button/form_button";
 import { LogisticsFieldGroup } from "./logistics_field_group/logistics_field_group";
-import { validationSchema } from "./helpers/validation";
+import { validationSchema } from "../../helpers/validation";
 import {
   extractChangedFields,
   extractFilledFields,
-} from "./helpers/extractors";
+} from "../../helpers/extractors";
 import "./event_form.css";
 
 export const EventForm = ({ defaultValues = {}, onSubmit }) => {
@@ -46,12 +46,9 @@ export const EventForm = ({ defaultValues = {}, onSubmit }) => {
 
   const handleFormSubmit = useCallback(
     (data) => {
-      let payload = {};
-      if (isEdit) {
-        payload = extractChangedFields(data, dirtyFields);
-      } else {
-        payload = extractFilledFields(data);
-      }
+      const payload = isEdit
+        ? extractChangedFields(data, dirtyFields)
+        : extractFilledFields(data);
       onSubmit(payload);
     },
     [isEdit, dirtyFields, onSubmit]

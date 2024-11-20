@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { fetchEvents } from "../api.js";
-import { EventTable } from "../event_table/event_table.jsx";
+import { fetchEvents } from "../../api.js";
+import { EventTable } from "../../components/event_table/event_table.jsx";
 import { useNavigate } from "react-router-dom";
 import "./event_list_page.css";
 

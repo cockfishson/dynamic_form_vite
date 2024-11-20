@@ -1,8 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import { CreateEventPage } from "./create_event_page/create_event_page";
-import { EditEventPage } from "./edit_event_page/edit_event_page";
-import { EventListPage } from "./event_list_page/event_list_page";
+import { CreateEventPage } from "./pages/create_event_page/create_event_page";
+import { EditEventPage } from "./pages/edit_event_page/edit_event_page";
+import { EventListPage } from "./pages/event_list_page/event_list_page";
 
 export function App() {
   return (

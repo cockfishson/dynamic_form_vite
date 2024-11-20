@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getEventById, updateEvent } from "../api";
-import { EventForm } from "../event_form/event_form";
+import { getEventById, updateEvent } from "../../api";
+import { EventForm } from "../../components/event_form/event_form";
 import "./edit_event_page.css";
 
 export const EditEventPage = () => {
