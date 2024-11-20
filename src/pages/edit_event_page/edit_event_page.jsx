@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { getEventById, updateEvent } from "../../api";
+import { useParams } from "react-router-dom";
+import { useHandleNavigation } from "../../helpers/click_handlers/handle_navigation";
+import { handleEventSubmit } from "../../helpers/click_handlers/handle_submit";
+import { getEventById, updateEvent } from "../../api/events.api.js";
 import { EventForm } from "../../components/event_form/event_form";
 import "./edit_event_page.css";
 
 export const EditEventPage = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
+  const handleNavigation = useHandleNavigation();
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -25,21 +27,13 @@ export const EditEventPage = () => {
     getEvent();
   }, [id]);
 
-  const handleSubmit = async (data) => {
-    const formattedData = {
-      ...data,
-      date:
-        data.date instanceof Date
-          ? data.date.toISOString().substring(0, 10)
-          : data.date,
-    };
-
-    try {
-      await updateEvent(id, formattedData);
-      navigate("/");
-    } catch (error) {
-      console.error("Event update failed - ", error);
-    }
+  const handleSubmit = (data) => {
+    handleEventSubmit({
+      id,
+      data,
+      apiFunction: updateEvent,
+      handleNavigation,
+    });
   };
 
   return (
@@ -57,7 +51,7 @@ export const EditEventPage = () => {
             />
           )
         )}
-        <button onClick={() => navigate("/")} className="action_button">
+        <button onClick={() => handleNavigation("/")} className="action_button">
           Back to List
         </button>
       </div>

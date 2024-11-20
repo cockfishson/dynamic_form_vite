@@ -1,9 +1,8 @@
-import { useNavigate } from "react-router-dom";
+import { useHandleNavigation } from "../../../helpers/click_handlers/handle_navigation";
 import "../event_table.css";
 
 export const EventRow = ({ event }) => {
-  const navigate = useNavigate();
-
+  const handleNavigation = useHandleNavigation();
   return (
     <tr className="tbody_tr">
       <td className="td">{event.title || "Untitled Event"}</td>
@@ -28,9 +27,10 @@ export const EventRow = ({ event }) => {
       </td>
       <td className="td">
         <button
-          onClick={() => navigate(`/edit/${event.id || ""}`)}
+          onClick={() => handleNavigation(`/edit/${event.id || ""}`)}
           className="link"
         >
+          {" "}
           Edit
         </button>
       </td>

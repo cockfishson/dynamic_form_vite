@@ -1,30 +1,21 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { createEvent } from "../../api.js";
+import { useHandleNavigation } from "../../helpers/click_handlers/handle_navigation";
+import { handleEventSubmit } from "../../helpers/click_handlers/handle_submit.js";
+import { createEvent } from "../../api/events.api.js";
 import { EventForm } from "../../components/event_form/event_form.jsx";
 import "./create_event_page.css";
 
 export const CreateEventPage = () => {
-  const navigate = useNavigate();
+  const handleNavigation = useHandleNavigation();
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (data) => {
-    setLoading(true);
-    const formattedData = {
-      ...data,
-      date:
-        data.date instanceof Date
-          ? data.date.toISOString().substring(0, 10)
-          : data.date,
-    };
-    try {
-      await createEvent(formattedData);
-      navigate("/");
-    } catch (error) {
-      console.error("Event update failed - ", error);
-    } finally {
-      setLoading(false);
-    }
+  const handleSubmit = (data) => {
+    handleEventSubmit({
+      data,
+      apiFunction: createEvent,
+      handleNavigation,
+      setLoading,
+    });
   };
 
   return (
@@ -35,7 +26,7 @@ export const CreateEventPage = () => {
         {loading ? (
           <div className="loader">Creating event...</div>
         ) : (
-          <button className="link" onClick={() => navigate("/")}>
+          <button className="link" onClick={() => handleNavigation("/")}>
             Back to event list
           </button>
         )}

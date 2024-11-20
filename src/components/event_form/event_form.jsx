@@ -83,7 +83,7 @@ export const EventForm = ({ defaultValues = {}, onSubmit }) => {
             inputText="Date*"
             inputId="date"
             type="date"
-            register={register("date")}
+            register={register("date", { required: "Date is required" })}
             error={errors.date}
           />
         </div>

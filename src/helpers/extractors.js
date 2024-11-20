@@ -19,20 +19,23 @@ export const extractChangedFields = (data, dirtyFields) => {
           return null;
         })
         .filter(Boolean);
-    } else if (dirtyFields[key]) {
+    } else {
       changed[key] = data[key];
     }
   }
 
   return changed;
 };
+
 export const extractFilledFields = (data) => {
   const filled = {};
 
   for (const key in data) {
     const value = data[key];
 
-    if (value && typeof value === "object") {
+    if (value instanceof Date) {
+      filled[key] = value;
+    } else if (value && typeof value === "object") {
       if (Array.isArray(value)) {
         const arrayFilled = value
           .map((item) => extractFilledFields(item))
