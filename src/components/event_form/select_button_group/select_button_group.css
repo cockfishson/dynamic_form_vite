@@ -1,0 +1,32 @@
+.form_group {
+    display: flex;
+    flex-direction: column;
+}
+
+.input_error {
+    border: 1px solid red;
+}
+
+.error_message {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.select_label {
+    color: #151515;
+}
+
+
+.input {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ffa726;
+    border-radius: 4px;
+}
+
+.input:focus {
+    outline: none;
+    border-color: #ff6f00;
+    box-shadow: 0 0 0 2px rgba(255, 111, 0, 0.2);
+}
