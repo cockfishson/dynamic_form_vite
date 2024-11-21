@@ -47,7 +47,7 @@ export const EventForm = ({ defaultValues = {}, onSubmit }) => {
   const handleFormSubmit = useCallback(
     (data) => {
       const payload = isEdit
-        ? extractChangedFields(data, dirtyFields)
+        ? extractChangedFields(data, dirtyFields, defaultValues)
         : extractFilledFields(data);
       onSubmit(payload);
     },

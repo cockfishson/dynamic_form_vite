@@ -1,26 +1,51 @@
-export const extractChangedFields = (data, dirtyFields) => {
+export const extractChangedFields = (data, dirtyFields, defaultValues = {}) => {
   const changed = {};
 
   for (const key in dirtyFields) {
-    if (
-      typeof dirtyFields[key] === "object" &&
-      !Array.isArray(dirtyFields[key])
-    ) {
-      const nestedChanged = extractChangedFields(data[key], dirtyFields[key]);
-      if (Object.keys(nestedChanged).length > 0) {
-        changed[key] = nestedChanged;
+    const dataValue = data[key];
+    const dirtyValue = dirtyFields[key];
+    const defaultValue = defaultValues[key];
+
+    if (dirtyValue && typeof dirtyValue === "object") {
+      if (dataValue instanceof Date) {
+        const defaultDate = defaultValue ? new Date(defaultValue) : null;
+        if (
+          (!defaultDate && dataValue) ||
+          (defaultDate && dataValue.getTime() !== defaultDate.getTime())
+        ) {
+          changed[key] = dataValue.toISOString().substring(0, 10);
+        }
+      } else if (Array.isArray(dataValue)) {
+        const hasArrayChanges = dirtyValue.some((item, index) => {
+          if (!item) return false;
+          const currentItem = dataValue[index];
+          const defaultItem = defaultValue?.[index] || {};
+          return Object.keys(item).some(
+            (key) => currentItem[key] !== defaultItem[key]
+          );
+        });
+
+        if (hasArrayChanges) {
+          changed[key] = dataValue;
+        }
+      } else {
+        const nestedChanged = extractChangedFields(
+          dataValue,
+          dirtyValue,
+          defaultValue
+        );
+        if (Object.keys(nestedChanged).length > 0) {
+          changed[key] = nestedChanged;
+        }
       }
-    } else if (Array.isArray(dirtyFields[key])) {
-      changed[key] = data[key]
-        .map((item, index) => {
-          if (dirtyFields[key][index]) {
-            return extractChangedFields(item, dirtyFields[key][index]);
-          }
-          return null;
-        })
-        .filter(Boolean);
-    } else {
-      changed[key] = data[key];
+    } else if (dirtyValue) {
+      if (dataValue !== defaultValue) {
+        if (dataValue instanceof Date) {
+          changed[key] = dataValue.toISOString().substring(0, 10);
+        } else {
+          changed[key] = dataValue;
+        }
+      }
     }
   }
 
